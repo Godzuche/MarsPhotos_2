@@ -6,7 +6,7 @@ import retrofit2.create
 import retrofit2.http.GET
 
 private const val BASE_URL =
-    "https://android-kotlin-fun-mars-server-.appspot.com"
+    "https://android-kotlin-fun-mars-server.appspot.com"
 
 // Retrofit object
 private val retrofit = Retrofit.Builder()
