@@ -19,6 +19,8 @@ package com.example.android.marsphotos.overview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
@@ -26,10 +28,10 @@ import androidx.lifecycle.ViewModel
 class OverviewViewModel : ViewModel() {
 
     // The internal MutableLiveData that stores the status of the most recent request
-    private val _status = MutableLiveData<String>()
+    private val _status = MutableStateFlow<String>("")
 
     // The external immutable LiveData for the request status
-    val status: LiveData<String> = _status
+    val status: StateFlow<String> = _status
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
      */
