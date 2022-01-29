@@ -25,18 +25,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+enum class MarsApiStatus { LOADING, ERROR, DONE }
+
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
  */
 class OverviewViewModel : ViewModel() {
 
     // The internal MutableLiveData that stores the status of the most recent request
-    private val _photos = MutableStateFlow<MarsPhoto>(MarsPhoto("", ""))
-    private val _status = MutableStateFlow<String>("")
+    private val _photos = MutableStateFlow<List<MarsPhoto>>(emptyList())
+    private val _status = MutableStateFlow<MarsApiStatus>(MarsApiStatus.LOADING)
 
     // The external immutable LiveData for the request status
-    val photos: StateFlow<MarsPhoto> = _photos
-    val status: StateFlow<String> = _status
+    val photos: MutableStateFlow<List<MarsPhoto>> = _photos
+    val status: MutableStateFlow<MarsApiStatus> = _status
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
      */
@@ -50,12 +52,14 @@ class OverviewViewModel : ViewModel() {
      */
     private fun getMarsPhotos() {
         viewModelScope.launch {
+            _status.value = MarsApiStatus.LOADING
             try{
                 // Get Photos
-                _photos.value = MarsApi.retrofitService.getPhotos()[0]
-                _status.value = "   First Mars image URL : ${_photos.value.imgSrcUrl}"
+                _photos.value = MarsApi.retrofitService.getPhotos()
+                _status.value = MarsApiStatus.DONE
             } catch (e: Exception) {
-                _status.value = "Failure: ${e.message}"
+                _status.value = MarsApiStatus.ERROR
+                _photos.value = emptyList()
             }
         }
     }
