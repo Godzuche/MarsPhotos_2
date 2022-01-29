@@ -16,6 +16,11 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
             .build()
 
         // Load image from uri object into the imageView using Coil
-        imgView.load(imgUri)
+        imgView.load(imgUri) {
+            placeholder(R.drawable.loading_animation)
+            error(R.drawable.ic_broken_image)
+        }
     }
+
+
 }
