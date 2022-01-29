@@ -1,0 +1,21 @@
+package com.example.android.marsphotos
+
+import android.widget.ImageView
+import androidx.core.net.toUri
+import androidx.databinding.BindingAdapter
+import coil.load
+
+
+@BindingAdapter("imageUrl")
+fun bindImage(imgView: ImageView, imgUrl: String?) {
+    imgUrl?.let {
+        // Convert the url string to uri using toUri()
+        val imgUri = imgUrl.toUri()
+        // To use HTTPS scheme
+            .buildUpon().scheme("https")
+            .build()
+
+        // Load image from uri object into the imageView using Coil
+        imgView.load(imgUri)
+    }
+}
